@@ -1,92 +1,76 @@
-/*   
 
-   Javascript reading file from .csv format and simple visualization routine 
-   
-*/
-
-package com.journaldev.csv;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-
-public class Planet {
-
-	private int id;
-	private String name;
-	private double ra;
-	private double dec;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public double getRA() {
-		return ra;
-	}
-	public void setRA(double ra) {
-		this.ra = ra;
-	}
-	public double getDec() {
-		return dec;
-	}
-	public void setDec(double dec) {
-		this.dec = dec;
-	}
-	
-	@Override
-	public String toString(){
-		return "\nID="+getId()+"::Name"+getName()+"::RA="+getRA()+"::Dec="+getDec();
-	}
+//MAIN
+function main() {
+	render();
 }
 
-public class ReadCSVWithScanner {
+//--Function: render-------------------------------------
+//Main drawing function
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(
-				"cumulative.csv"));
+function render(canvas){
+    
+  var canvas = document.getElementById('example');
+  if (! canvas) {
+    console.log(' Failed to retrieve the < canvas > element');
+    return false;
+  }
+  else {
+	console.log(' Got < canvas > element ');
+  }
 
-		String line = null;
-		Scanner scanner = null;
-		int index = 0;
-		List<Planet> planetList = new ArrayList<>();
+var ctx = canvas.getContext('2d');
 
-		while ((line = reader.readLine()) != null) {
-			Planet p = new Planet();
-			scanner = new Scanner(line);
-			scanner.useDelimiter(",");
-			while (scanner.hasNext()) {
-				String data = scanner.next();
-				if (index == 0)
-					p.setId(Integer.parseInt(data));
-				else if (index == 1)
-					p.setName(data);
-				else if (index == 105) //???
-					p.setRA(Double.parseDouble(data));
-				else if (index == 106)
-					p.setDec(Double.parseDouble(data));
-				else
-					System.out.println("invalid data::" + data);
-				index++;
-			}
-			index = 0;
-			planetList.add(p);
-		}
-		
-		reader.close();		
-		System.out.println(planetList);
-		
-	}
+var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+
+var data;
+ $.ajax({
+   type: "GET",  
+   url: "culmulative.csv",
+   dataType: "text",       
+   success: function(response)  
+   {
+ data = $.csv.toArrays(response);
+ generateHtmlTable(data);
+   }   
+ });
+
+
+    
 
 }
+
+function generateHtmlTable(data) {
+    var html = '<table  class="table table-condensed table-hover table-striped">';
+ 
+      if(typeof(data[0]) === 'undefined') {
+        return null;
+      } else {
+ $.each(data, function( index, row ) {
+   //bind header
+   if(index == 0) {
+ html += '<thead>';
+ html += '<tr>';
+ $.each(row, function( index, colData ) {
+ html += '<th>';
+ html += colData;
+ html += '</th>';
+ });
+ html += '</tr>';
+ html += '</thead>';
+ html += '<tbody>';
+   } else {
+ html += '<tr>';
+ $.each(row, function( index, colData ) {
+ html += '<td>';
+ html += colData;
+ html += '</td>';
+ });
+ html += '</tr>';
+   }
+ });
+ html += '</tbody>';
+ html += '</table>';
+ alert(html);
+ $('#csv-display').append(html);
+   }
+ } 
