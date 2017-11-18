@@ -1,1 +1,52 @@
-<h1>Hello World!</h1>
+<!doctype html>
+<html lang="en">
+    
+<style>
+  .thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+</style>
+
+<style>
+  #progress_bar {
+    margin: 10px 0;
+    padding: 3px;
+    border: 1px solid #000;
+    font-size: 14px;
+    clear: both;
+    opacity: 0;
+    -moz-transition: opacity 1s linear;
+    -o-transition: opacity 1s linear;
+    -webkit-transition: opacity 1s linear;
+  }
+  #progress_bar.loading {
+    opacity: 1.0;
+  }
+  #progress_bar .percent {
+    background-color: #99ccff;
+    height: auto;
+    width: 0;
+  }
+</style>
+
+<!-- load libraries -->
+<script src ="main.js" ></script >
+   
+    
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Visualization of Kepler Planets</title>
+</head>
+		
+
+<body onload="main()">
+
+    <canvas id ="example" width ="800" height ="800">
+			Please use a browser that supports "canvas"
+    </canvas >
+
+</body>
+</html>
