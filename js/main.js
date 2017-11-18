@@ -1,6 +1,16 @@
+
+/*   
+
+   Main 3D visualization routine
+   
+*/
+
+
 var camera, controls, scene, renderer;
 
-function startVisualiztion() {
+//MAIN
+function main() {
+	readingdata();
     init();
     animate();
 }
@@ -30,19 +40,25 @@ function init() {
     var axisHelper = new THREE.AxesHelper(30);
     scene.add(axisHelper);
 
-    // TODO: replace this section
-    // world
     scene.background = new THREE.Color( 0 );
     scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
     var geometry = new THREE.SphereGeometry(5, 16, 16);
     var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
-    for ( var i = 0; i < 500; i ++ ) {
+    for ( var i = 0; i < data.length; i ++ ) {
         var mesh = new THREE.Mesh( geometry, material );
-        r = Math.random() * 500;
+        
+        //Random points for testing
+        /* r = Math.random() * 500;
         theta = Math.random() * 360;
         mesh.position.x = r * Math.cos(theta);
         mesh.position.y = r * Math.sin(theta);
         mesh.position.z = ( Math.random() - 0.5 ) * 10;
+        */
+        
+        var planet = getprops(data[i]);
+        mesh.position.x = planet.position[0];
+        mesh.position.y = planet.position[1];
+        mesh.position.z = planet.position[2];
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
         scene.add( mesh );

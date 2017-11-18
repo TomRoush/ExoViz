@@ -1,92 +1,42 @@
 /*   
 
-   Javascript reading file from .csv format and simple visualization routine 
+   Planet class containing different parameters
    
 */
 
-package com.journaldev.csv;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-
-public class Planet {
-
-	private int id;
-	private String name;
-	private double ra;
-	private double dec;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public double getRA() {
-		return ra;
-	}
-	public void setRA(double ra) {
-		this.ra = ra;
-	}
-	public double getDec() {
-		return dec;
-	}
-	public void setDec(double dec) {
-		this.dec = dec;
-	}
-	
-	@Override
-	public String toString(){
-		return "\nID="+getId()+"::Name"+getName()+"::RA="+getRA()+"::Dec="+getDec();
-	}
+//For planets on the celestial sphere
+class PlanetBasic = {
+    constructor(id, name, ra ,dec, distance, radius, temperature) {
+	this.id = id;
+    this.name = name;
+    this.ra = ra*Math.PI/180;
+	this.dec = dec*Math.PI/180;
+    this.dist = distance;
+    this.radius = radius; // in pc
+    this.temp = temperature;
+    }
+    get position(){
+        return this.calcpos();
+    }
+    calcpos() {
+        var x = this.radius * Math.cos(this.ra) * Math.sin(Math.PI/2.-this.dec);
+        var y = this.radius * Math.sin(this.ra) * Math.sin(Math.PI/2.-this.dec);
+        var z = this.radius * Math.cos(Math.PI/2.-this.dec);
+        return [x,y,z];
+    }
 }
 
-public class ReadCSVWithScanner {
-
-	public static void main(String[] args) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(
-				"cumulative.csv"));
-
-		String line = null;
-		Scanner scanner = null;
-		int index = 0;
-		List<Planet> planetList = new ArrayList<>();
-
-		while ((line = reader.readLine()) != null) {
-			Planet p = new Planet();
-			scanner = new Scanner(line);
-			scanner.useDelimiter(",");
-			while (scanner.hasNext()) {
-				String data = scanner.next();
-				if (index == 0)
-					p.setId(Integer.parseInt(data));
-				else if (index == 1)
-					p.setName(data);
-				else if (index == 105) //???
-					p.setRA(Double.parseDouble(data));
-				else if (index == 106)
-					p.setDec(Double.parseDouble(data));
-				else
-					System.out.println("invalid data::" + data);
-				index++;
-			}
-			index = 0;
-			planetList.add(p);
-		}
-		
-		reader.close();		
-		System.out.println(planetList);
-		
-	}
-
+//For zoomed-in planet-star systems
+class PlanetZoom = {
+    constructor(id, name, p, a, e, inc, rstar, tstar) {
+	this.id = id;
+    this.name = name;
+    this.period = p;
+	this.semimajor = a;
+    this.eccentricity = e;
+    this.inclination = inc;
+    this.rstar = rstar;
+    this.tstar = tstar; //stellar temperature
+    }
+    
 }

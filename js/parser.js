@@ -1,18 +1,16 @@
+/*   
 
-//MAIN
-function main() {
-	readingdata();
-    startVisualiztion();
-}
+  Reading in data and passing variables
+   
+*/
 
-
-function readingdata(){
+function readingdata() {
 
 // Method 1
 /*var data;
 $.ajax({
    type: "GET",
-   url: "data/testcsv.csv",
+   url: "data/planets.csv",
    dataType: "csv",
  }).done(successFunction);
 console.log(data); */
@@ -25,14 +23,14 @@ require('lib/jquery.csv.js');
 var sample = '../data/testcsv.csv';
 fs.readFile(sample, 'UTF-8', function(err, csv) {
   $.csv.toArrays(csv, {}, function(err, data) {
-    for(var i=0, len=data.length; i<len; i++) {
+    for(var i=0, i <data.length; i++) {
       console.log(data[i]);
     }
   });
 });
 
 // Method 3
-/*var file = 'data/culmulative.csv';
+/*var file = 'data/planets.csv';
 var reader = new FileReader();
 reader.readAsText(file);
 reader.onload = function(event) {
@@ -86,40 +84,16 @@ function successFunction(data) {
   $('body').append(table);
 }
 
-function generateHtmlTable(data) {
-    var html = '<table  class="table table-condensed table-hover table-striped">';
-
-      if(typeof(data[0]) === 'undefined') {
-        return null;
-      } else {
- $.each(data, function( index, row ) {
-   //bind header
-   if(index == 0) {
- html += '<thead>';
- html += '<tr>';
- $.each(row, function( index, colData ) {
- html += '<th>';
- html += colData;
- html += '</th>';
- });
- html += '</tr>';
- html += '</thead>';
- html += '<tbody>';
-   } else {
- html += '<tr>';
- $.each(row, function( index, colData ) {
- html += '<td>';
- html += colData;
- html += '</td>';
- });
- html += '</tr>';
-   }
- });
- html += '</tbody>';
- html += '</table>';
- alert(html);
- $('#csv-display').append(html);
-   }
- }
-
-//function to
+//function to get certain quantities from one data object 
+function getprops(line){
+    var id = line[0]; 
+    var name = line[1]; 
+    var radius = line[10];
+    var ra = line[13];
+    var dec = line[15];
+    var distance = line[16];
+    var temperature = line[19];
+    
+    var pl = new PlanetBasic(id, name, ra ,dec, distance, radius, temperature);
+    return pl;
+}
