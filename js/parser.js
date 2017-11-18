@@ -11,7 +11,7 @@ function readingdata(){
 var data;
 $.ajax({
    type: "GET",  
-   url: "data/culmulative.csv",
+   url: "data/testcsv.csv",
    dataType: "csv",       
  }).done(successFunction); 
 
@@ -107,3 +107,4 @@ function generateHtmlTable(data) {
    }
  } 
 
+//function to 
