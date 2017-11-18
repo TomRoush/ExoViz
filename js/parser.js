@@ -1,32 +1,18 @@
 
 //MAIN
 function main() {
-	render();
+	readingdata();
+    render();
 }
 
-//--Function: render-------------------------------------
-//Main drawing function
 
-function render(canvas){
+function readingdata(){
     
-  var canvas = document.getElementById('example');
-  if (! canvas) {
-    console.log(' Failed to retrieve the < canvas > element');
-    return false;
-  }
-  else {
-	console.log(' Got < canvas > element ');
-  }
-
-var ctx = canvas.getContext('2d');
-
-var imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
-
 var data;
- $.ajax({
+$.ajax({
    type: "GET",  
    url: "culmulative.csv",
-   dataType: "text",       
+   dataType: "csv",       
    success: function(response)  
    {
  data = $.csv.toArrays(response);
@@ -35,7 +21,6 @@ var data;
  });
 
 
-    
 
 }
 
