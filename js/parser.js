@@ -11,17 +11,64 @@ function readingdata(){
 var data;
 $.ajax({
    type: "GET",  
-   url: "culmulative.csv",
+   url: "data/culmulative.csv",
    dataType: "csv",       
-   success: function(response)  
-   {
- data = $.csv.toArrays(response);
- generateHtmlTable(data);
-   }   
- });
+ }).done(successFunction); 
 
 
+/*var file = 'data/culmulative.csv';
+var reader = new FileReader();
+reader.readAsText(file);
+reader.onload = function(event) {
+    var csvData = event.target.result;
+     data = $.csv.toArrays(csvData);
+    if (data && data.length > 0) {
+    alert('Imported -' + data.length + '- rows successfully!');
+     } else {
+    alert('No data to import!');
+    }
+};
+    reader.onerror = function() {
+    alert('Unable to read ' + file.fileName);
+    };
+ */   
+console.log(data);
 
+}
+
+function successFunction(data) {
+  var allRows = data.split(/\r?\n|\r/);
+  var table = '<table>';
+  for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+    if (singleRow === 0) {
+      table += '<thead>';
+      table += '<tr>';
+    } else {
+      table += '<tr>';
+    }
+    var rowCells = allRows[singleRow].split(',');
+    for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+      if (singleRow === 0) {
+        table += '<th>';
+        table += rowCells[rowCell];
+        table += '</th>';
+      } else {
+        table += '<td>';
+        table += rowCells[rowCell];
+        table += '</td>';
+      }
+    }
+    if (singleRow === 0) {
+      table += '</tr>';
+      table += '</thead>';
+      table += '<tbody>';
+    } else {
+      table += '</tr>';
+    }
+  } 
+  table += '</tbody>';
+  table += '</table>';
+  $('body').append(table);
 }
 
 function generateHtmlTable(data) {
@@ -59,3 +106,4 @@ function generateHtmlTable(data) {
  $('#csv-display').append(html);
    }
  } 
+
