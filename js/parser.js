@@ -7,15 +7,31 @@ function main() {
 
 
 function readingdata(){
-    
-var data;
+
+// Method 1    
+/*var data;
 $.ajax({
    type: "GET",  
    url: "data/testcsv.csv",
    dataType: "csv",       
  }).done(successFunction); 
+console.log(data); */
 
+//Method 2
+var fs = require('fs');
+var $ = jQuery = require('jQuery');
+require('lib/jquery.csv.js');
 
+var sample = '../data/testcsv.csv';
+fs.readFile(sample, 'UTF-8', function(err, csv) {
+  $.csv.toArrays(csv, {}, function(err, data) {
+    for(var i=0, len=data.length; i<len; i++) {
+      console.log(data[i]);
+    }
+  });
+});   
+
+// Method 3
 /*var file = 'data/culmulative.csv';
 var reader = new FileReader();
 reader.readAsText(file);
@@ -32,7 +48,6 @@ reader.onload = function(event) {
     alert('Unable to read ' + file.fileName);
     };
  */   
-console.log(data);
 
 }
 
