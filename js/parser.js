@@ -2,19 +2,19 @@
 //MAIN
 function main() {
 	readingdata();
-    render();
+    startVisualiztion();
 }
 
 
 function readingdata(){
 
-// Method 1    
+// Method 1
 /*var data;
 $.ajax({
-   type: "GET",  
+   type: "GET",
    url: "data/testcsv.csv",
-   dataType: "csv",       
- }).done(successFunction); 
+   dataType: "csv",
+ }).done(successFunction);
 console.log(data); */
 
 //Method 2
@@ -29,7 +29,7 @@ fs.readFile(sample, 'UTF-8', function(err, csv) {
       console.log(data[i]);
     }
   });
-});   
+});
 
 // Method 3
 /*var file = 'data/culmulative.csv';
@@ -47,7 +47,7 @@ reader.onload = function(event) {
     reader.onerror = function() {
     alert('Unable to read ' + file.fileName);
     };
- */   
+ */
 
 }
 
@@ -80,7 +80,7 @@ function successFunction(data) {
     } else {
       table += '</tr>';
     }
-  } 
+  }
   table += '</tbody>';
   table += '</table>';
   $('body').append(table);
@@ -88,7 +88,7 @@ function successFunction(data) {
 
 function generateHtmlTable(data) {
     var html = '<table  class="table table-condensed table-hover table-striped">';
- 
+
       if(typeof(data[0]) === 'undefined') {
         return null;
       } else {
@@ -120,6 +120,6 @@ function generateHtmlTable(data) {
  alert(html);
  $('#csv-display').append(html);
    }
- } 
+ }
 
-//function to 
+//function to

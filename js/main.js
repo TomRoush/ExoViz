@@ -1,7 +1,9 @@
 var camera, controls, scene, renderer;
 
-init();
-animate();
+function startVisualiztion() {
+    init();
+    animate();
+}
 
 function init() {
     scene = new THREE.Scene();
@@ -30,15 +32,17 @@ function init() {
 
     // TODO: replace this section
     // world
-    scene.background = new THREE.Color( 0xcccccc );
+    scene.background = new THREE.Color( 0 );
     scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
-    var geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );
+    var geometry = new THREE.SphereGeometry(5, 16, 16);
     var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
     for ( var i = 0; i < 500; i ++ ) {
         var mesh = new THREE.Mesh( geometry, material );
-        mesh.position.x = ( Math.random() - 0.5 ) * 1000;
-        mesh.position.y = ( Math.random() - 0.5 ) * 1000;
-        mesh.position.z = ( Math.random() - 0.5 ) * 1000;
+        r = Math.random() * 500;
+        theta = Math.random() * 360;
+        mesh.position.x = r * Math.cos(theta);
+        mesh.position.y = r * Math.sin(theta);
+        mesh.position.z = ( Math.random() - 0.5 ) * 10;
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
         scene.add( mesh );
