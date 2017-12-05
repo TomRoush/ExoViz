@@ -23,7 +23,7 @@ require('lib/jquery.csv.js');
 var sample = '../data/testcsv.csv';
 fs.readFile(sample, 'UTF-8', function(err, csv) {
   $.csv.toArrays(csv, {}, function(err, data) {
-    for(var i=0, i <data.length; i++) {
+    for(var i=0; i<data.length; i++) {
       console.log(data[i]);
     }
   });
@@ -49,6 +49,7 @@ reader.onload = function(event) {
 
 }
 
+/*   
 function successFunction(data) {
   var allRows = data.split(/\r?\n|\r/);
   var table = '<table>';
@@ -83,7 +84,8 @@ function successFunction(data) {
   table += '</table>';
   $('body').append(table);
 }
-
+*/
+    
 //function to get certain quantities from one data object 
 function getprops(line){
     var id = line[0]; 
