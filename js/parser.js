@@ -16,9 +16,9 @@ $.ajax({
 console.log(data); */
 
 //Method 2
-var fs = require('fs');
-var $ = jQuery = require('jQuery');
-require('lib/jquery.csv.js');
+var fs = require(['fs']);
+var $ = jQuery = require(['jQuery']);
+require(['lib/jquery.csv.js']);
 
 var sample = '../data/testcsv.csv';
 fs.readFile(sample, 'UTF-8', function(err, csv) {

@@ -5,7 +5,7 @@
 */
 
 //For planets on the celestial sphere
-class PlanetBasic = {
+class PlanetBasic {
     constructor(id, name, ra ,dec, distance, radius, temperature) {
 	this.id = id;
     this.name = name;
@@ -27,7 +27,7 @@ class PlanetBasic = {
 }
 
 //For zoomed-in planet-star systems
-class PlanetZoom = {
+class PlanetZoom {
     constructor(id, name, p, a, e, inc, rstar, tstar) {
 	this.id = id;
     this.name = name;
