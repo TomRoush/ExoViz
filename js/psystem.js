@@ -16,12 +16,14 @@ var name = 'test planet';
 var background = new Image();
 var star = new Image();
 var planet = new Image();
+var data;
+
 function animate_star() {
   background.src = 'https://i.ytimg.com/vi/voWpbz1De_M/maxresdefault.jpg';
   //star.src;
   planet.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
   var line = parseInt(document.getElementById("planet_id").value);
-  readingdata();
+  data = readingdata();
   window.requestAnimationFrame(function() {
         draw(line);
     });
@@ -42,6 +44,7 @@ function draw(line) {
   ctx.translate(200, 200); //move orbit center 
     
   //Some quantities
+  // TODO: how to deal with empty values?
   var planet_zoom = getprops(data[line])[1];
   var p = planet_zoom.period /365;
   var a = planet_zoom.semimajor;
@@ -55,6 +58,7 @@ function draw(line) {
   var b = a*Math.sqrt(1- e*e);
   var c = a*e;
   var omega = 2* Math.PI/p;
+  console.log(a, e, radius);
       
   // Draw planet
   var time = new Date();
@@ -77,13 +81,13 @@ function draw(line) {
   // Draw star 
   ctx.beginPath();
   var centerx = 200 - 150 * c/a;
-  ctx.arc(centerx, 200, 20.*rstar, 0, 2 * Math.PI, false);
-  ctx.fillStyle = rainbow_colormap(tstar, tmin, tmax);
+  ctx.arc(centerx, 200, radius, 0, 2 * Math.PI, false);
+  ctx.fillStyle = rainbow_colormap(temp, tmin, tmax);
   ctx.fill();
   ctx.stroke();
     
   // Add text
-  ctx.font = "30px Comic Sans MS";
+  ctx.font = "20px Comic Sans MS";
   ctx.fillStyle = "red";
   ctx.textAlign = "center";
   ctx.fillText(name, 200, 380); 

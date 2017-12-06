@@ -17,9 +17,9 @@ function readingdata() {
       alert( "Request failed: " + textStatus );
     }); 
 
-    
+    return data;
 }
-var data;
+//var data;
 
 function successFunction(d) {
 
