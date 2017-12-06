@@ -4,50 +4,64 @@
 
 */
 
+var background = new Image();
 var star = new Image();
 var planet = new Image();
 function animate_star() {
-  star.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
+  background.src = 'https://i.ytimg.com/vi/voWpbz1De_M/maxresdefault.jpg';
+  //star.src;
   planet.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
   window.requestAnimationFrame(draw);
 }
 
 //test input
-var p = 1.; //years
-var a = 1.;  // AU
-var e = 0.5;
+var p = 1.; //in years
+var a = 1.;  // in AU
+var e = 0.5; 
 var inc = 0.;  //degrees
 
 function draw() {
   var ctx = document.getElementById('canvas').getContext('2d');
 
-  ctx.globalCompositeOperation = 'destination-over';
-  ctx.clearRect(0, 0, 300, 300);
-
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.clearRect(0, 0, 400, 400);
+  ctx.drawImage(background, 0, 0, 400, 400);
+    
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
   ctx.strokeStyle = 'rgba(0, 153, 255, 0.4)';
+  ctx.lineWidth = 5;
   ctx.save();
-  ctx.translate(150, 150);
-
+  ctx.translate(200, 200); //move orbit center 
+    
+  //Some quantities
+  var b = a*Math.sqrt(1- e*e);
+  var c = a*e;
+  var omega = 2* Math.PI/p;
+      
   // Draw planet
   var time = new Date();
-  ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
-  ctx.translate(105, 0);
-  ctx.fillRect(0, -12, 50, 24); // Shadow
-  ctx.drawImage(planet, -12, -12);
+  var ang_now = 0.;
+  var ang_rotate = (omega / 60) * time.getSeconds() + (omega/ 60000) * time.getMilliseconds();
+  //ctx.rotate(ang_rotate);
+  ang_now = ang_now + ang_rotate;
+  ctx.translate(a*150*Math.cos(ang_now), b*150*Math.sin(ang_now));
+  ctx.drawImage(planet, -16, -16);
   
   ctx.restore();
   
   // Draw orbit
   ctx.beginPath();
-  var b = a*Math.sqrt(1- e*e);
-  major = a * 100; //transfer to pixel
-  minor = b * 100;
-  ctx.ellipse(150, 150, major, minor, inc,  0, Math.PI * 2, false);
+  major = a * 150; //transfer to pixel
+  minor = b * 150;
+  ctx.ellipse(200, 200, major, minor, 0.,  0, Math.PI * 2, false);
   ctx.stroke();
  
-  // Draw star
-  ctx.drawImage(star, 0, 0, 300, 300);
+  // Draw star (should actually on one of the focus)
+  ctx.beginPath();
+  var centerx = 200 - 150 * c/a;
+  ctx.arc(centerx, 200, 20, 0, 2 * Math.PI, false);
+  ctx.fill();
+  ctx.stroke();
 
   window.requestAnimationFrame(draw);
 }
