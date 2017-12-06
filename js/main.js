@@ -1,8 +1,8 @@
 
-/*   
+/*
 
    Main 3D visualization routine
-   
+
 */
 
 
@@ -11,8 +11,6 @@ var camera, controls, scene, renderer;
 //MAIN
 function main() {
 	readingdata();
-    init();
-    animate();
 }
 
 function init() {
@@ -46,7 +44,7 @@ function init() {
     var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
     for ( var i = 0; i < data.length; i ++ ) {
         var mesh = new THREE.Mesh( geometry, material );
-        
+
         //Random points for testing
         /* r = Math.random() * 500;
         theta = Math.random() * 360;
@@ -54,7 +52,7 @@ function init() {
         mesh.position.y = r * Math.sin(theta);
         mesh.position.z = ( Math.random() - 0.5 ) * 10;
         */
-        
+
         var planet = getprops(data[i]);
         mesh.position.x = planet.position[0];
         mesh.position.y = planet.position[1];
@@ -77,6 +75,7 @@ function init() {
     document.body.appendChild(renderer.domElement);
 
     render();
+	animate();
 }
 
 function animate() {
