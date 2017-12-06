@@ -60,16 +60,14 @@ function getprops(line){ // TODO cache
     // planet ra sexagesimal 12
     // planet ra decimal 13
     // planet dec sexagesimal 14
-    // planet dec decial 15
+    // planet dec decimal 15
     // planet distance 16
     // planet optical magnitude 17
     // planet optical mag band 18
-    // stellar? temperature 19
+    // stellar temperature 19
     // stellar mass 20
     // stellar radius 21
-    // planet radius 22
-    // number of moons 23
-
+    // planet temperature 22
 
     //Basic quantities
     var id = line[0];
@@ -78,6 +76,7 @@ function getprops(line){ // TODO cache
     var ra = line[13];
     var dec = line[15];
     var distance = line[16];
+    var temperature = line[22];
 
     // Planet-Star Systems
     var p = line[4];
@@ -87,7 +86,7 @@ function getprops(line){ // TODO cache
     var rstar = line[21];
     var tstar = line[19];
 
-    var pl = new PlanetBasic(id, name, ra ,dec, distance, radius);
+    var pl = new PlanetBasic(id, name, ra ,dec, distance, radius, temperature);
     var pstar = new PlanetZoom(id, name, p, a, e, inc, rstar, tstar);
     return [pl, pstar];
 }

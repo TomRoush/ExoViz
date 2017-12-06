@@ -6,13 +6,14 @@
 
 //For planets on the celestial sphere
 class PlanetBasic { // TODO default values for missing data
-    constructor(id, name, ra ,dec, distance, radius) {
+    constructor(id, name, ra ,dec, distance, radius, temperature) {
 	this.id = id;
     this.name = name;
     this.ra = ra*Math.PI/180;
 	this.dec = dec*Math.PI/180;
     this.dist = distance;
     this.radius = radius; // in pc
+    this.temperature = temperature;
 
     this.position = [
         this.dist * Math.cos(this.ra) * Math.sin(Math.PI/2.-this.dec),
