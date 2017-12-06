@@ -15,13 +15,12 @@ function readingdata() {
     }).done(successFunction).fail(function( jqXHR, textStatus ) {
       alert( "Request failed: " + textStatus );
     });
-    // console.log(data);
 
 }
 var data;
 
 function successFunction(d) {
-    console.log("Data loaded successfully");
+
     var allRows = d.split(/\r?\n|\r/);
     data = [];
     // var table = '<table>';
@@ -44,7 +43,7 @@ function successFunction(d) {
 
 
 //function to get certain quantities from one data object
-function getprops(line){
+function getprops(line){ // TODO cache
 
     // id 0
     // name 1

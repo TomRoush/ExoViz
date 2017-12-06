@@ -1,11 +1,11 @@
-/*   
+/*
 
    Planet class containing different parameters
-   
+
 */
 
 //For planets on the celestial sphere
-class PlanetBasic {
+class PlanetBasic { // TODO default values for missing data
     constructor(id, name, ra ,dec, distance, radius) {
 	this.id = id;
     this.name = name;
@@ -13,15 +13,12 @@ class PlanetBasic {
 	this.dec = dec*Math.PI/180;
     this.dist = distance;
     this.radius = radius; // in pc
-    }
-    get position(){
-        return this.calcpos();
-    }
-    calcpos() {
-        var x = this.radius * Math.cos(this.ra) * Math.sin(Math.PI/2.-this.dec);
-        var y = this.radius * Math.sin(this.ra) * Math.sin(Math.PI/2.-this.dec);
-        var z = this.radius * Math.cos(Math.PI/2.-this.dec);
-        return [x,y,z];
+
+    this.position = [
+        this.dist * Math.cos(this.ra) * Math.sin(Math.PI/2.-this.dec),
+        this.dist * Math.sin(this.ra) * Math.sin(Math.PI/2.-this.dec),
+        this.dist * Math.cos(Math.PI/2.-this.dec)
+    ];
     }
 }
 
@@ -37,6 +34,5 @@ class PlanetZoom {
     this.rstar = rstar;
     this.tstar = tstar; //stellar temperature
     }
-    
-    
+
 }
