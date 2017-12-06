@@ -86,3 +86,15 @@ function onWindowResize() {
     controls.handleResize();
     render();
 }
+
+function rainbow_colormap(fval,fmin,fmax){
+    var dx=0.8;
+    var fval_nrm = (fval-fmin)/(fmax-fmin);
+    var g = (6.0-2.0*dx)*fval_nrm +dx;
+    var R = Math.max(0.0,(3.0-Math.abs(g-4.0)-Math.abs(g-5.0))/2.0 )*255;
+    var G = Math.max(0.0,(4.0-Math.abs(g-2.0)-Math.abs(g-4.0))/2.0 )*255;
+    var B = Math.max(0.0,(3.0-Math.abs(g-1.0)-Math.abs(g-2.0))/2.0 )*255;
+    color = [Math.round(R),Math.round(G),Math.round(B),255];
+    return color;
+}
+ 

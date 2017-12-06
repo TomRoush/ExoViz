@@ -21,12 +21,12 @@ function animate_star() {
   //star.src;
   planet.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
   var line = parseInt(document.getElementById("planet_id").value);
+  readingdata();
   window.requestAnimationFrame(function() {
         draw(line);
     });
 }
 
-readingdata();
 
 function draw(line) {
   var ctx = document.getElementById('canvas').getContext('2d');
@@ -48,6 +48,10 @@ function draw(line) {
   var e = planet_zoom.eccentricity;
   var inc = planet_zoom.inclination; 
   var name = planet_zoom.name;
+  var radius = planet_zoom.rstar; // in solar radii
+  var temp = planet_zoom.tstar;
+  var tmin = 2000.;
+  var tmax = 12000.;
   var b = a*Math.sqrt(1- e*e);
   var c = a*e;
   var omega = 2* Math.PI/p;
@@ -70,10 +74,11 @@ function draw(line) {
   ctx.ellipse(200, 200, major, minor, 0.,  0, Math.PI * 2, false);
   ctx.stroke();
  
-  // Draw star (should actually on one of the focus)
+  // Draw star 
   ctx.beginPath();
   var centerx = 200 - 150 * c/a;
-  ctx.arc(centerx, 200, 20, 0, 2 * Math.PI, false);
+  ctx.arc(centerx, 200, 20.*rstar, 0, 2 * Math.PI, false);
+  ctx.fillStyle = rainbow_colormap(tstar, tmin, tmax);
   ctx.fill();
   ctx.stroke();
     
