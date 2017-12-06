@@ -88,14 +88,24 @@ function successFunction(data) {
     
 //function to get certain quantities from one data object 
 function getprops(line){
+    
+    //Basic quantities
     var id = line[0]; 
     var name = line[1]; 
-    var radius = line[10];
-    var ra = line[13];
-    var dec = line[15];
-    var distance = line[16];
-    var temperature = line[19];
+    var radius = line[9];
+    var ra = line[12];
+    var dec = line[14];
+    var distance = line[15];
     
-    var pl = new PlanetBasic(id, name, ra ,dec, distance, radius, temperature);
-    return pl;
+    // Planet-Star Systems
+    var p = line[3];
+	var a = line[4];
+    var e = line[5];
+    var inc = line[6];
+    var rstar = line[20];
+    var tstar = line[18]; 
+    
+    var pl = new PlanetBasic(id, name, ra ,dec, distance, radius);
+    var pstar = new PlanetZoom(id, name, p, a, e, inc, rstar, tstar);
+    return [pl, pstar];
 }

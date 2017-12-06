@@ -6,14 +6,13 @@
 
 //For planets on the celestial sphere
 class PlanetBasic {
-    constructor(id, name, ra ,dec, distance, radius, temperature) {
+    constructor(id, name, ra ,dec, distance, radius) {
 	this.id = id;
     this.name = name;
     this.ra = ra*Math.PI/180;
 	this.dec = dec*Math.PI/180;
     this.dist = distance;
     this.radius = radius; // in pc
-    this.temp = temperature;
     }
     get position(){
         return this.calcpos();
@@ -38,5 +37,6 @@ class PlanetZoom {
     this.rstar = rstar;
     this.tstar = tstar; //stellar temperature
     }
+    
     
 }
