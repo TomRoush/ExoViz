@@ -4,6 +4,15 @@
 
 */
 
+
+//test input
+/*
+var p = 1.; //in years
+var a = 1.;  // in AU
+var e = 0.5; 
+var inc = 0.;  //degrees
+var name = 'test planet';
+*/
 var background = new Image();
 var star = new Image();
 var planet = new Image();
@@ -11,16 +20,15 @@ function animate_star() {
   background.src = 'https://i.ytimg.com/vi/voWpbz1De_M/maxresdefault.jpg';
   //star.src;
   planet.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
-  window.requestAnimationFrame(draw);
+  var line = parseInt(document.getElementById("planet_id").value);
+  window.requestAnimationFrame(function() {
+        draw(line);
+    });
 }
 
-//test input
-var p = 1.; //in years
-var a = 1.;  // in AU
-var e = 0.5; 
-var inc = 0.;  //degrees
+readingdata();
 
-function draw() {
+function draw(line) {
   var ctx = document.getElementById('canvas').getContext('2d');
 
   ctx.globalCompositeOperation = 'lighter';
@@ -34,6 +42,12 @@ function draw() {
   ctx.translate(200, 200); //move orbit center 
     
   //Some quantities
+  var planet_zoom = getprops(data[line])[1];
+  var p = planet_zoom.period /365;
+  var a = planet_zoom.semimajor;
+  var e = planet_zoom.eccentricity;
+  var inc = planet_zoom.inclination; 
+  var name = planet_zoom.name;
   var b = a*Math.sqrt(1- e*e);
   var c = a*e;
   var omega = 2* Math.PI/p;
@@ -62,6 +76,14 @@ function draw() {
   ctx.arc(centerx, 200, 20, 0, 2 * Math.PI, false);
   ctx.fill();
   ctx.stroke();
+    
+  // Add text
+  ctx.font = "30px Comic Sans MS";
+  ctx.fillStyle = "red";
+  ctx.textAlign = "center";
+  ctx.fillText(name, 200, 380); 
 
-  window.requestAnimationFrame(draw);
+  window.requestAnimationFrame(function() {
+        draw(line);
+    });
 }
