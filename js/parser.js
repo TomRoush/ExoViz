@@ -7,15 +7,17 @@
 function readingdata() {
 
     console.log("Start data file loading...");
-    $.ajax({
+
+      $.ajax({
        // type: "GET",
        mimeType: 'text/plain; charset=x-user-defined',
        url: "data/planets.csv",
        dataType: "text",
     }).done(successFunction).fail(function( jqXHR, textStatus ) {
       alert( "Request failed: " + textStatus );
-    });
+    }); 
 
+    
 }
 var data;
 
