@@ -34,6 +34,7 @@ class PlanetZoom {
     this.inclination = inc;
     this.rstar = rstar;
     this.tstar = tstar; //stellar temperature
+        
     }
 
 }
