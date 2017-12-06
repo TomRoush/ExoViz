@@ -66,21 +66,21 @@ function draw(line) {
   var ang_rotate = (omega / 60) * time.getSeconds() + (omega/ 60000) * time.getMilliseconds();
   //ctx.rotate(ang_rotate);
   ang_now = ang_now + ang_rotate;
-  ctx.translate(a*150*Math.cos(ang_now), b*150*Math.sin(ang_now));
+  ctx.translate(a*50*Math.cos(ang_now), b*50*Math.sin(ang_now));
   ctx.drawImage(planet, -16, -16);
   
   ctx.restore();
   
   // Draw orbit
   ctx.beginPath();
-  major = a * 150; //transfer to pixel
-  minor = b * 150;
+  major = a * 50; //transfer to pixel
+  minor = b * 50;
   ctx.ellipse(200, 200, major, minor, 0.,  0, Math.PI * 2, false);
   ctx.stroke();
  
   // Draw star 
   ctx.beginPath();
-  var centerx = 200 - 150 * c/a;
+  var centerx = 200 - 50 * c/a;
   ctx.arc(centerx, 200, radius, 0, 2 * Math.PI, false);
   ctx.fillStyle = rainbow_colormap(temp, tmin, tmax);
   ctx.fill();
