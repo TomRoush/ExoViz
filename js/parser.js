@@ -19,7 +19,23 @@ function readingdata() {
 
     return data;
 }
-//var data;
+
+function readingrefdata() {
+
+    console.log("Start reference star file loading...");
+
+      $.ajax({
+       // type: "GET",
+       mimeType: 'text/plain; charset=x-user-defined',
+       url: "data/ref.csv",
+       dataType: "text",
+    }).done(successFunction).fail(function( jqXHR, textStatus ) {
+      alert( "Request failed: " + textStatus );
+    }); 
+
+    return data_ref;
+}
+
 
 function successFunction(d) {
 
@@ -91,4 +107,20 @@ function getprops(line){ // TODO cache
     var pl = new PlanetBasic(id, name, ra ,dec, distance, radius, temperature);
     var pstar = new PlanetZoom(id, name, p, a, e, inc, rstar, tstar);
     return [pl, pstar];
+}
+
+//for reference stars and planets
+
+function getprops_ref(line){
+
+    var name = line[0];
+    var distance = line[3];
+    var temperature = line[5];   
+    var radius = line[8];
+    var ra = line[11];
+    var dec = line[12];
+    
+    var ref_star = new BrightStars(name, ra ,dec, distance, radius, temperature);
+    
+    return ref_star;
 }

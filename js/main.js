@@ -11,6 +11,7 @@ var camera, controls, scene, renderer;
 //MAIN
 function main() {
 	readingdata();
+    readingrefdata();
 }
 
 function init() {
@@ -42,6 +43,8 @@ function init() {
     scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
     var geometry = new THREE.SphereGeometry(5, 16, 16);
     var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
+    
+    //This is for planets
 	for ( var i = 0; i < data.length; i ++ ) {
         var mesh = new THREE.Mesh( geometry, material );
 
@@ -53,6 +56,20 @@ function init() {
         mesh.matrixAutoUpdate = false;
         scene.add( mesh );
     }
+    
+    //This is for reference stars
+    for ( var i = 0; i < data_ref.length; i ++ ) {
+        var mesh = new THREE.Mesh( geometry, material );
+
+        var refstar = getprops_ref(data_ref[i]);
+        mesh.position.x = refstar.position[0];
+        mesh.position.y = refstar.position[1];
+        mesh.position.z = refstar.position[2];
+        mesh.updateMatrix();
+        mesh.matrixAutoUpdate = false;
+        scene.add( mesh );
+    }
+    
     // lights
     var light = new THREE.DirectionalLight( 0xffffff );
     light.position.set( 1, 1, 1 );
