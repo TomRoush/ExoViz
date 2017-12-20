@@ -7,6 +7,7 @@
 
 
 var camera, controls, scene, renderer;
+var mouse, raycaster;
 
 //MAIN
 function main() {
@@ -26,6 +27,9 @@ function init() {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
+	raycaster = new THREE.Raycaster();
+	mouse = new THREE.Vector2();
+
     // Controls
     controls = new THREE.TrackballControls(camera);
     controls.rotateSpeed = 5.0;
@@ -40,7 +44,7 @@ function init() {
 
     scene.background = new THREE.Color( 0 );
     scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
-    var geometry = new THREE.SphereGeometry(5, 16, 16);
+    var geometry = new THREE.SphereBufferGeometry(5, 16, 16);
     var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
 	for ( var i = 0; i < data.length; i ++ ) {
         var mesh = new THREE.Mesh( geometry, material );
@@ -51,6 +55,7 @@ function init() {
         mesh.position.z = planet.position[2];
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
+		mesh.userData = {prop: planet}
         scene.add( mesh );
     }
     // lights
@@ -63,6 +68,8 @@ function init() {
     var light = new THREE.AmbientLight( 0x222222 );
     scene.add( light );
 
+	document.addEventListener('mousedown', onDocumentMouseDown, false);
+	document.addEventListener('touchstart', onDocumentTouchStart, false);
     window.addEventListener('resize', onWindowResize, false);
     document.body.appendChild(renderer.domElement);
 
@@ -87,6 +94,25 @@ function onWindowResize() {
     render();
 }
 
+function onDocumentTouchStart(event) {
+	event.preventDefault();
+	event.clientX = event.touches[0].clientX;
+	event.clientY = event.touches[0].clientY;
+	onDocumentMouseDown(event);
+}
+
+function onDocumentMouseDown(event) {
+	event.preventDefault();
+	mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+	mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+	raycaster.setFromCamera(mouse, camera);
+	var intersects = raycaster.intersectObjects(scene.children);
+	if (intersects.length > 0) {
+		console.log(intersects[0].object.userData["prop"].name);
+	}
+}
+
 function rainbow_colormap(fval,fmin,fmax){
     var dx=0.8;
     var fval_nrm = (fval-fmin)/(fmax-fmin);
@@ -97,4 +123,3 @@ function rainbow_colormap(fval,fmin,fmax){
     color = [Math.round(R),Math.round(G),Math.round(B),255];
     return color;
 }
- 
