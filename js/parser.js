@@ -3,45 +3,38 @@
   Reading in data and passing variables
 
 */
-
+var data, data_ref;
 function readingdata() {
 
     console.log("Start data file loading...");
+    $.when(
+        $.ajax({
+            mimeType: 'text/plain; charset=x-user-defined',
+            url: "data/planets.csv",
+            dataType: "text",
+        }),
+        $.ajax({
+            mimeType: 'text/plain; charset=x-user-defined',
+            url: "data/ref.csv",
+            dataType: "text",
+            }),
+    ).done(function(resPlanet, resRef) {
+        data = parseCSV(resPlanet[0]);
+        data_ref = parseCSV(resRef[0]);
 
-      $.ajax({
-       // type: "GET",
-       mimeType: 'text/plain; charset=x-user-defined',
-       url: "data/planets.csv",
-       dataType: "text",
-    }).done(successFunction).fail(function( jqXHR, textStatus ) {
-      alert( "Request failed: " + textStatus );
-    }); 
+        init();
+    });
+    //   .done(successFunction).fail(function( jqXHR, textStatus ) {
+    //   alert( "Request failed: " + textStatus );
+    // });
 
     return data;
 }
 
-function readingrefdata() {
-
-    console.log("Start reference star file loading...");
-
-      $.ajax({
-       // type: "GET",
-       mimeType: 'text/plain; charset=x-user-defined',
-       url: "data/ref.csv",
-       dataType: "text",
-    }).done(successFunction).fail(function( jqXHR, textStatus ) {
-      alert( "Request failed: " + textStatus );
-    }); 
-
-    return data_ref;
-}
-
-
-function successFunction(d) {
-
+function parseCSV(d) {
     var allRows = d.split(/\r?\n|\r/);
-    data = [];
-    // var table = '<table>';
+    var result = [];
+
     for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
         if (allRows[singleRow].startsWith('#') || // Comment line
             allRows[singleRow].startsWith('rowid')) continue; // Header line
@@ -51,12 +44,9 @@ function successFunction(d) {
         for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
             line.push(rowCells[rowCell]);
         }
-        data.push(line);
-
+        result.push(line);
     }
-
-    // getprops(data[0]);
-    init();
+    return result;
 }
 
 
@@ -115,12 +105,12 @@ function getprops_ref(line){
 
     var name = line[0];
     var distance = line[3];
-    var temperature = line[5];   
+    var temperature = line[5];
     var radius = line[8];
     var ra = line[11];
     var dec = line[12];
-    
+
     var ref_star = new BrightStars(name, ra ,dec, distance, radius, temperature);
-    
+
     return ref_star;
 }

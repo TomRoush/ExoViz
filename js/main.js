@@ -13,7 +13,6 @@ var systemCanvas, systemTexture, systemMaterial, systemMesh, systemObject;
 //MAIN
 function main() {
 	readingdata();
-    readingrefdata();
 }
 
 function init() {
@@ -45,7 +44,6 @@ function init() {
     scene.add(axisHelper);
 
     scene.background = new THREE.Color( 0 );
-    scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
     var geometry = new THREE.SphereBufferGeometry(5, 16, 16);
     var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
 
@@ -148,13 +146,13 @@ function onDocumentMouseDown(event) {
 
 	raycaster.setFromCamera(mouse, camera);
 	var intersects = raycaster.intersectObjects(scene.children);
-	if (intersects.length > 0) {
+	for (var i = 0; i < intersects.length; i++) {
 		// console.log(intersects[0]);
-		if (intersects[0].object.userData["prop"]) {
+		if (intersects[i].object.userData["prop"]) {
 			systemObject = intersects[0].object;
 			drawSystemCanvas();
+			break;
 		}
-
 	}
 	render();
 }
