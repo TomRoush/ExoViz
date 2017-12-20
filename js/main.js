@@ -8,6 +8,7 @@
 
 var camera, controls, scene, renderer;
 var mouse, raycaster;
+var systemCanvas, systemTexture, systemMaterial, systemMesh, systemObject;
 
 //MAIN
 function main() {
@@ -38,7 +39,7 @@ function init() {
     controls.panSpeed = 0.8;
     controls.dynamicsDampingFactor = 0.2;
     this.keys = [ 65 /*A*/, 83 /*S*/, 68 /*D*/ ];
-    controls.addEventListener('change', render);
+    controls.addEventListener('change', onControlChange);
 
     var axisHelper = new THREE.AxesHelper(30);
     scene.add(axisHelper);
@@ -47,21 +48,22 @@ function init() {
     scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
     var geometry = new THREE.SphereBufferGeometry(5, 16, 16);
     var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
-    
+
     //This is for planets
 	for ( var i = 0; i < data.length; i ++ ) {
         var mesh = new THREE.Mesh( geometry, material );
 
-        var planet = getprops(data[i])[0];
+		var data_line = getprops(data[i]);
+        var planet = data_line[0];
         mesh.position.x = planet.position[0];
         mesh.position.y = planet.position[1];
         mesh.position.z = planet.position[2];
         mesh.updateMatrix();
         mesh.matrixAutoUpdate = false;
-		mesh.userData = {prop: planet}
+		mesh.userData = {prop: data_line}
         scene.add( mesh );
     }
-    
+
     //This is for reference stars
     for ( var i = 0; i < data_ref.length; i ++ ) {
         var mesh = new THREE.Mesh( geometry, material );
@@ -74,7 +76,7 @@ function init() {
         mesh.matrixAutoUpdate = false;
         scene.add( mesh );
     }
-    
+
     // lights
     var light = new THREE.DirectionalLight( 0xffffff );
     light.position.set( 1, 1, 1 );
@@ -90,6 +92,25 @@ function init() {
     window.addEventListener('resize', onWindowResize, false);
     document.body.appendChild(renderer.domElement);
 
+	// create a canvas element
+	systemCanvas = document.createElement('canvas');
+	systemCanvas.width = 512;
+	systemCanvas.height = 512;
+	// canvas contents will be used for a texture
+	systemTexture = new THREE.Texture(systemCanvas);
+
+
+	systemMaterial = new THREE.MeshBasicMaterial( {map: systemTexture, side:THREE.DoubleSide, depthTest:false} );
+	systemMaterial.transparent = true;
+
+	systemMesh = new THREE.Mesh(
+		new THREE.PlaneGeometry(systemCanvas.width, systemCanvas.height),
+		systemMaterial
+	);
+	systemMesh.renderOrder = 0;
+	systemMesh.matrixAutoUpdate = false;
+	scene.add( systemMesh );
+
     render();
 	animate();
 }
@@ -97,9 +118,11 @@ function init() {
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
+	render();
 }
 
 function render() {
+	updateSystemCanvas();
     renderer.render(scene, camera);
 }
 
@@ -126,7 +149,39 @@ function onDocumentMouseDown(event) {
 	raycaster.setFromCamera(mouse, camera);
 	var intersects = raycaster.intersectObjects(scene.children);
 	if (intersects.length > 0) {
-		console.log(intersects[0].object.userData["prop"].name);
+		// console.log(intersects[0]);
+		if (intersects[0].object.userData["prop"]) {
+			systemObject = intersects[0].object;
+			drawSystemCanvas();
+		}
+
+	}
+	render();
+}
+
+function onControlChange() {
+	systemMesh.lookAt(camera.position);
+	systemMesh.updateMatrix();
+}
+
+function updateSystemCanvas() {
+	if (systemObject && systemObject.userData["prop"]) {
+		draw_system(systemCanvas, systemObject.userData["prop"][1]);
+		if ( systemTexture ) // checks if texture exists
+			systemTexture.needsUpdate = true;
+
+	}
+}
+
+function drawSystemCanvas() {
+	if (systemObject && systemObject.userData["prop"]) {
+		draw_system(systemCanvas, systemObject.userData["prop"][1]);
+		if ( systemTexture ) // checks if texture exists
+			systemTexture.needsUpdate = true;
+		var pos = systemObject.position;
+		systemMesh.position.set(pos.x, pos.y, pos.z);
+		systemMesh.scale.set(0.25, 0.25, 0.25);
+		systemMesh.updateMatrix();
 	}
 }
 
