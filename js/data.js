@@ -12,8 +12,8 @@ class PlanetBasic { // TODO default values for missing data
     this.ra = ra*Math.PI/180;
 	this.dec = dec*Math.PI/180;
     this.dist = distance; //in pc
-    this.radius = radius; 
-    this.temperature = temperature;
+    this.radius = radius;
+    this.temperature = !isNaN(temperature) ? temperature : 5335; // Average temp
 
     this.position = [
         this.dist * Math.cos(this.ra) * Math.sin(Math.PI/2.-this.dec),
@@ -34,7 +34,7 @@ class PlanetZoom {
     this.inclination = inc;
     this.rstar = rstar;
     this.tstar = tstar; //stellar temperature
-        
+
     }
 
 }
@@ -42,12 +42,12 @@ class PlanetZoom {
 // For reference stars
 class BrightStars{
     constructor(name, ra ,dec, distance, radius, temperature) {
-        
+
     this.name = name;
     this.ra = ra*Math.PI/180;
 	this.dec = dec*Math.PI/180;
     this.dist = distance;
-    this.radius = radius; 
+    this.radius = radius;
     this.temperature = temperature;
 
     this.position = [

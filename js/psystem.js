@@ -94,7 +94,7 @@ function draw_system(canvas, planet_zoom) {
 
   // Add text
   ctx.font = "25px Comic Sans MS";
-  ctx.fillStyle = "red";
+  ctx.fillStyle = "blue";
   ctx.textAlign = "center";
   ctx.fillText(name, half, half + major + 0.0625 * canvas.height); // TODO min
 }

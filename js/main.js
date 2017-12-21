@@ -40,8 +40,8 @@ function init() {
     this.keys = [ 65 /*A*/, 83 /*S*/, 68 /*D*/ ];
     controls.addEventListener('change', onControlChange);
 
-    var axisHelper = new THREE.AxesHelper(30);
-    scene.add(axisHelper);
+    // var axisHelper = new THREE.AxesHelper(30);
+    // scene.add(axisHelper);
 
     scene.background = new THREE.Color( 0 );
     var geometry = new THREE.SphereBufferGeometry(5, 16, 16);
@@ -51,7 +51,7 @@ function init() {
 		var data_line = getprops(data[i]);
         var planet = data_line[0];
 
-		var stellar_color = rainbow_colormap(planet.temperature, 580, 10500);
+		var stellar_color = teff_colormap(planet.temperature); // , 580, 10500
         var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: stellar_color, flatShading: true }));
 
         mesh.position.x = planet.position[0];
@@ -192,5 +192,18 @@ function rainbow_colormap(fval,fmin,fmax){
     var R = Math.max(0.0,(3.0-Math.abs(g-4.0)-Math.abs(g-5.0))/2.0 );
     var G = Math.max(0.0,(4.0-Math.abs(g-2.0)-Math.abs(g-4.0))/2.0 );
     var B = Math.max(0.0,(3.0-Math.abs(g-1.0)-Math.abs(g-2.0))/2.0 );
+	return new THREE.Color(R, G, B);
+}
+
+// Linearly interpolated based on effective temperature -> hex estimations from:
+// http://www.vendian.org/mncharity/dir3/starcolor/details.html
+function teff_colormap(temp){
+	var downTemp = 1.0 - (temp-6500)/(113017-6500);
+    var R = Math.min(1.0, 0.616 + (1.0 - 0.616) * downTemp);
+	// G splits at 6500
+	var highTemps = 0.698 + (1.0 - 0.698) * downTemp;
+	var lowTemps = 0.322 + (temp-1195)/(6500-1195);
+    var G =  Math.min(1.0, Math.max(0.0, temp > 6500 ? highTemps : lowTemps));
+    var B = Math.min(1.0, Math.max(0.0, (temp - 1675) / (6728-1675)));
 	return new THREE.Color(R, G, B);
 }
