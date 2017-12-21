@@ -45,14 +45,15 @@ function init() {
 
     scene.background = new THREE.Color( 0 );
     var geometry = new THREE.SphereBufferGeometry(5, 16, 16);
-    var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
 
     //This is for planets
 	for ( var i = 0; i < data.length; i ++ ) {
-        var mesh = new THREE.Mesh( geometry, material );
-
 		var data_line = getprops(data[i]);
         var planet = data_line[0];
+
+		var stellar_color = rainbow_colormap(planet.temperature, 580, 10500);
+        var mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: stellar_color, flatShading: true }));
+
         mesh.position.x = planet.position[0];
         mesh.position.y = planet.position[1];
         mesh.position.z = planet.position[2];
@@ -62,9 +63,10 @@ function init() {
         scene.add( mesh );
     }
 
+	var refStarMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, flatShading: true });
     //This is for reference stars
     for ( var i = 0; i < data_ref.length; i ++ ) {
-        var mesh = new THREE.Mesh( geometry, material );
+        var mesh = new THREE.Mesh( geometry, refStarMaterial );
 
         var refstar = getprops_ref(data_ref[i]);
         mesh.position.x = refstar.position[0];
@@ -187,9 +189,8 @@ function rainbow_colormap(fval,fmin,fmax){
     var dx=0.8;
     var fval_nrm = (fval-fmin)/(fmax-fmin);
     var g = (6.0-2.0*dx)*fval_nrm +dx;
-    var R = Math.max(0.0,(3.0-Math.abs(g-4.0)-Math.abs(g-5.0))/2.0 )*255;
-    var G = Math.max(0.0,(4.0-Math.abs(g-2.0)-Math.abs(g-4.0))/2.0 )*255;
-    var B = Math.max(0.0,(3.0-Math.abs(g-1.0)-Math.abs(g-2.0))/2.0 )*255;
-    color = [Math.round(R),Math.round(G),Math.round(B),255];
-    return color;
+    var R = Math.max(0.0,(3.0-Math.abs(g-4.0)-Math.abs(g-5.0))/2.0 );
+    var G = Math.max(0.0,(4.0-Math.abs(g-2.0)-Math.abs(g-4.0))/2.0 );
+    var B = Math.max(0.0,(3.0-Math.abs(g-1.0)-Math.abs(g-2.0))/2.0 );
+	return new THREE.Color(R, G, B);
 }
